@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">单词本</string>
+    <string name="iv_launch">launch background</string>
+    <string name="iv_logo">main logo</string>
+    <string name="iv_nmet">nmet button</string>
+    <string name="iv_cet4">cet4 button</string>
+    <string name="iv_cet6">cet6 button</string>
+    <string name="iv_ietsl">ietsl button</string>
+    <string name="iv_gre">gre button</string>
+    <string name="iv_category">category image</string>
+    <string name="no_data">没有查到数据</string>
+    <string name="nmet">全国高考英语词汇</string>
+    <string name="cet4">大学英语四级词汇</string>
+    <string name="cet6">大学英语六级词汇</string>
+    <string name="ietsl">雅思词汇</string>
+    <string name="gre">美国研究生入学考试词汇</string>
+    <string name="unit">Unit</string>
+    <string name="iv_word">word list image</string>
+    <string name="iv_trans">image_trans</string>
+    <string name="btn_previous">previous button</string>
+    <string name="tv_back">后退</string>
+    <string name="tv_play">播放</string>
+    <string name="tv_pause">停止</string>
+    <string name="tv_next">前进</string>
+    <string name="setting">设置</string>
+    <string name="select_speed">选择速度</string>
+    <string name="search">search</string>
+    <string name="first_page">已经第一页</string>
+    <string name="last_page">到达最后一页</string>
+    <string name="search_hint">请输入要查询的单词</string>
+    <string name="sum_time">累计阅读：</string>
+    <string-array name="speed_type">
+        <item>极快</item>
+        <item>稍快</item>
+        <item>普通</item>
+        <item>稍慢</item>
+        <item>极慢</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="exit_hint">再按一次退出程序</string>
+</resources>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@android:color/white"
+             android:padding="5dp"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/iv_logo"
+        android:src="@mipmap/main_logo"
+        />
+
+    <TableRow
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:id="@+id/iv_nmet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/iv_nmet"
+            android:src="@drawable/nmet_selector"
+            />
+
+        <ImageView
+            android:id="@+id/iv_cet4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/iv_cet4"
+            android:src="@drawable/cet4_selector"
+            />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:id="@+id/iv_cet6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/iv_cet6"
+            android:src="@drawable/cet6_selector"
+            />
+
+        <ImageView
+            android:id="@+id/iv_ietsl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/iv_ietsl"
+            android:src="@drawable/ietsl_selector"
+            />
+    </TableRow>
+
+    <ImageView
+        android:id="@+id/iv_gre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@string/iv_gre"
+        android:src="@drawable/gre_selector"
+        />
+</TableLayout>

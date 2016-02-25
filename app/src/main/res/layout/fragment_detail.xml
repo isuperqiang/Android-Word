@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Hello"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/color_word_detail"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/tv_phono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_key"
+        android:layout_alignStart="@id/tv_key"
+        android:layout_below="@id/tv_key"
+        android:layout_marginTop="8dp"
+        android:text="[,æbə'reiʃən]"
+        android:textColor="@color/color_word_other"
+        />
+
+    <ImageView
+        android:id="@+id/iv_trans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_phono"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/iv_trans"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/word_trans"/>
+
+    <TextView
+        android:id="@+id/tv_trans"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/iv_trans"
+        android:layout_alignLeft="@id/iv_trans"
+        android:layout_alignRight="@id/iv_trans"
+        android:layout_alignStart="@id/iv_trans"
+        android:layout_below="@id/iv_trans"
+        android:layout_marginTop="10dp"
+        android:text="v. 煽动，教唆，教唆某人犯罪"
+        android:textColor="@color/color_trans_detail"
+        android:textSize="18sp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_exam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_trans"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/iv_trans"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/word_example"/>
+
+    <TextView
+        android:id="@+id/tv_exam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/iv_exam"
+        android:layout_alignLeft="@id/iv_exam"
+        android:layout_alignRight="@id/iv_exam"
+        android:layout_alignStart="@id/iv_exam"
+        android:layout_below="@+id/iv_exam"
+        android:layout_marginTop="10dp"
+        android:lineSpacingExtra="2dp"
+        android:text="1. A mental deviation or aberration.
+2. A mental or moral twist, aberration, or deviation."
+        android:textColor="@color/color_word_other"
+        android:textSize="14sp"
+        />
+</RelativeLayout>
