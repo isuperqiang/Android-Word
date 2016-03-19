@@ -1,13 +1,18 @@
 package com.silence.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.silence.adapter.CommonAdapter;
+import com.andraskindler.quickscroll.QuickScroll;
+import com.silence.adapter.WordAdapter;
 import com.silence.dao.WordDao;
 import com.silence.pojo.Word;
 import com.silence.utils.Const;
@@ -18,7 +23,7 @@ import java.util.List;
 /**
  * Created by Silence on 2016/2/8 0008.
  */
-public class WordListFgt extends ListFragment {
+public class WordListFgt extends Fragment implements AdapterView.OnItemClickListener {
 
     private onWordClickListener mOnWordClickListener;
 
@@ -40,22 +45,21 @@ public class WordListFgt extends ListFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
+        ListView listView = (ListView) view.findViewById(android.R.id.list);
+        QuickScroll quickScroll = (QuickScroll) view.findViewById(R.id.quickscroll);
         WordDao wordDao = new WordDao(getActivity());
         Bundle bundle = getArguments();
         List<Word> wordList = wordDao.getWords(bundle.getString(Const.META_KEY), bundle.getInt(Const.UNIT_KEY));
-        if (wordList != null) {
-            CommonAdapter commonAdapter = new CommonAdapter<Word>(wordList, R.layout.item_word) {
-                @Override
-                public void bindView(ViewHolder holder, Word obj) {
-                    holder.setText(R.id.tv_item_word, obj.getKey());
-                }
-            };
-            setListAdapter(commonAdapter);
-        } else {
-            Toast.makeText(getActivity(), R.string.no_data, Toast.LENGTH_SHORT).show();
-        }
+        WordAdapter wordAdapter = new WordAdapter(getActivity(), wordList);
+        listView.setAdapter(wordAdapter);
+        listView.setOnItemClickListener(this);
+        quickScroll.init(QuickScroll.TYPE_POPUP_WITH_HANDLE, listView, wordAdapter, QuickScroll.STYLE_HOLO);
+        quickScroll.setFixedSize(1);
+        quickScroll.setPopupColor(QuickScroll.BLUE_LIGHT, QuickScroll.BLUE_LIGHT_SEMITRANSPARENT, 1, Color.WHITE, 1);
+        quickScroll.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 42);
+        return view;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class WordListFgt extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (mOnWordClickListener != null) {
             mOnWordClickListener.getWordList(getArguments().getString(Const.META_KEY),
                     getArguments().getInt(Const.UNIT_KEY), position);

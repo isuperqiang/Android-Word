@@ -1,6 +1,9 @@
 package com.silence.activity;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,20 +15,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechSynthesizer;
+import com.iflytek.cloud.SynthesizerListener;
 import com.silence.dao.WordDao;
 import com.silence.fragment.DetailFgt;
+import com.silence.fragment.DetailFgt.onSpeechListener;
 import com.silence.fragment.SearchFgt;
 import com.silence.fragment.UnitListFgt;
 import com.silence.pojo.Unit;
 import com.silence.pojo.Word;
 import com.silence.utils.Const;
+import com.silence.utils.WavWriter;
 import com.silence.word.R;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class UnitListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,
-        SearchFgt.onSearchClickListener, UnitListFgt.onUnitClickListener {
+        SearchFgt.onSearchClickListener, UnitListFgt.onUnitClickListener, onSpeechListener {
     private UnitListFgt mUnitListFgt;
     private SearchFgt mSearchFgt;
     private DetailFgt mDetailFgt;
@@ -34,6 +46,8 @@ public class UnitListActivity extends AppCompatActivity implements SearchView.On
     private WordDao mWordDao;
     private ActionBar mActionBar;
     private FragmentManager mFragmentManager;
+    private SpeechSynthesizer mSynthesizer;
+    private MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +64,8 @@ public class UnitListActivity extends AppCompatActivity implements SearchView.On
             mUnitListFgt = UnitListFgt.getInstance(mMetaKey);
             mFragmentManager.beginTransaction().add(R.id.unit_content, mUnitListFgt).commit();
         }
+        initSpeech();
+        initPlayer();
     }
 
     private void setActionTitle() {
@@ -184,5 +200,106 @@ public class UnitListActivity extends AppCompatActivity implements SearchView.On
             super.onBackPressed();
         }
         transaction.commit();
+    }
+
+    private void initSpeech() {
+        mSynthesizer = SpeechSynthesizer.createSynthesizer(this, null);
+        mSynthesizer.setParameter(SpeechConstant.VOICE_NAME, "catherine"); //设置发音人
+        mSynthesizer.setParameter(SpeechConstant.SPEED, "50");//设置语速
+        mSynthesizer.setParameter(SpeechConstant.VOLUME, "80");//设置音量，范围 0~100
+        mSynthesizer.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD); //设置云端
+    }
+
+    private void initPlayer() {
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mMediaPlayer.start();
+            }
+        });
+        mMediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                mMediaPlayer.reset();
+                return true;
+            }
+        });
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mDetailFgt.setSpeakImg(R.mipmap.icon_speaker_off);
+            }
+        });
+    }
+
+    @Override
+    public void speech(Word word) {
+        mDetailFgt.setSpeakImg(R.mipmap.icon_speaker_on);
+        String content = word.getKey();
+        String path = getExternalCacheDir() + File.separator + "word_" + content + ".pcm";
+        final File file = new File(path);
+        if (file.exists()) {
+            try {
+                if (mMediaPlayer.isPlaying()) {
+                    mMediaPlayer.stop();
+                }
+                mMediaPlayer.reset();
+                mMediaPlayer.setDataSource(this, Uri.fromFile(file));
+                mMediaPlayer.prepareAsync();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mSynthesizer.setParameter(SpeechConstant.TTS_AUDIO_PATH, path);
+            SynthesizerListener synListener = new SynthesizerListener() {
+                public void onCompleted(SpeechError error) {
+                    if (error != null) {
+                        Toast.makeText(UnitListActivity.this, "获取网络发音失败", Toast.LENGTH_SHORT).show();
+                    } else {
+                        try {
+                            WavWriter wavWriter = new WavWriter(file, 16000);
+                            wavWriter.writeHeader();
+                            wavWriter.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        mDetailFgt.setSpeakImg(R.mipmap.icon_speaker_off);
+                    }
+                }
+
+                public void onBufferProgress(int percent, int beginPos, int endPos, String info) {
+                }
+
+                public void onSpeakBegin() {
+                }
+
+                public void onSpeakPaused() {
+                }
+
+                public void onSpeakProgress(int percent, int beginPos, int endPos) {
+                }
+
+                public void onSpeakResumed() {
+                }
+
+                public void onEvent(int arg0, int arg1, int arg2, Bundle arg3) {
+                }
+            };
+            mSynthesizer.startSpeaking(content, synListener);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mMediaPlayer != null) {
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.stop();
+            }
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
     }
 }

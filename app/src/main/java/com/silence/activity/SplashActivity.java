@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
 import com.silence.utils.Const;
 import com.silence.utils.DBOpenHelper;
 import com.silence.utils.FileUtils;
@@ -23,6 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean exist = sharedPreferences.getBoolean(Const.SP_KEY, false);
         if (!exist) {

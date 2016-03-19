@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">单词本</string>
+    <string name="app_name">记词</string>
     <string name="iv_launch">launch background</string>
     <string name="iv_logo">main logo</string>
     <string name="iv_nmet">nmet button</string>
@@ -22,7 +22,8 @@
     <string name="tv_play">播放</string>
     <string name="tv_pause">停止</string>
     <string name="tv_next">前进</string>
-    <string name="setting">设置</string>
+    <string name="setting_speak">自动发音</string>
+    <string name="setting_speed">播放速度</string>
     <string name="select_speed">选择速度</string>
     <string name="search">search</string>
     <string name="first_page">已经第一页</string>

@@ -16,5 +16,7 @@ public interface Const {
     String DB_NAME = "words.db";
     String DB_DIR = "databases";
     long DELAY_TIME = 1000;
+    String PLAY_SPEED = "play_speed";
+    String AUTO_SPEAK = "auto_speak";
     String[] META_KEYS = {WORDS_NMET, WORDS_CET4, WORDS_CET6, WORDS_IETSL, WORDS_GRE};
 }

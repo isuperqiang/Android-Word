@@ -38,6 +38,7 @@
         android:layout_weight="1"
         android:gravity="end"
         android:text="累计阅读：20 秒"
+        android:layout_marginRight="24dp"
         android:textColor="@color/color_cat_hint"
         android:textSize="14sp"/>
 </LinearLayout>

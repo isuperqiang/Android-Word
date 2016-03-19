@@ -31,12 +31,22 @@
         />
 
     <ImageView
+        android:id="@+id/icon_speech"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_key"
+        android:layout_marginRight="24dp"
+        android:padding="8dp"
+        android:src="@mipmap/icon_speaker_off"/>
+
+    <ImageView
         android:id="@+id/iv_trans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_phono"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:contentDescription="@string/iv_trans"
         android:scaleType="fitCenter"
         android:src="@mipmap/word_trans"/>
@@ -83,4 +93,5 @@
         android:textColor="@color/color_word_other"
         android:textSize="14sp"
         />
+
 </RelativeLayout>

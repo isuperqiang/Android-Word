@@ -6,7 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionBarSize">48dp</item>
     </style>
+
     <style name="bottom_bar_style">
         <item name="android:gravity">center</item>
         <item name="android:padding">2dp</item>
