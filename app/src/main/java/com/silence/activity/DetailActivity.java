@@ -202,7 +202,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         setTitle((mWordKey + 1) + "/" + mWordList.size());
         if (mIsAutoSpeak) {
             if (mIsPlaying && mLevel < 0) {
-                Toast.makeText(this, "当前播放速度过快, 无法自动发音, 请调慢速度", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.toast_too_fast, Toast.LENGTH_SHORT).show();
                 pause();
             } else {
                 speech(mWordList.get(position));
@@ -237,9 +237,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             mSynthesizer.setParameter(SpeechConstant.TTS_AUDIO_PATH, path);
             SynthesizerListener synListener = new SynthesizerListener() {
                 public void onCompleted(SpeechError error) {
-                    if (error != null) {
-                        Toast.makeText(DetailActivity.this, "获取网络发音失败", Toast.LENGTH_SHORT).show();
-                    } else {
+                    if (error == null) {
                         try {
                             WavWriter wavWriter = new WavWriter(file, 16000);
                             wavWriter.writeHeader();

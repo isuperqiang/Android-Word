@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
@@ -255,9 +254,7 @@ public class UnitListActivity extends AppCompatActivity implements SearchView.On
             mSynthesizer.setParameter(SpeechConstant.TTS_AUDIO_PATH, path);
             SynthesizerListener synListener = new SynthesizerListener() {
                 public void onCompleted(SpeechError error) {
-                    if (error != null) {
-                        Toast.makeText(UnitListActivity.this, "获取网络发音失败", Toast.LENGTH_SHORT).show();
-                    } else {
+                    if (error == null) {
                         try {
                             WavWriter wavWriter = new WavWriter(file, 16000);
                             wavWriter.writeHeader();
