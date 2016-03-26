@@ -44,6 +44,11 @@
     public static ** valueOf(java.lang.String);
 }
 
+-dontwarn net.youmi.android.**
+-keep class net.youmi.android.** {
+    *;
+}
+
 -keepclassmembers class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator CREATOR;
 }

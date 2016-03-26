@@ -18,7 +18,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,6 +83,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         setTitle((mWordKey + 1) + "/" + mWordList.size());
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mIsAutoSpeak = mSharedPreferences.getBoolean(Const.AUTO_SPEAK, true);
+        if (mIsAutoSpeak) {
+            speech(mWordList.get(mWordKey));
+        }
     }
 
     private void initPlayer() {
@@ -92,6 +94,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                DetailFgt item = (DetailFgt) mWordPagerAdapter.getFragment(mWordKey);
+                item.setSpeakImg(R.mipmap.icon_speaker_on);
                 mMediaPlayer.start();
             }
         });
@@ -138,12 +142,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         mViewPager.setAdapter(mWordPagerAdapter);
         mViewPager.setCurrentItem(mWordKey);
         mViewPager.addOnPageChangeListener(this);
-        mViewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
     }
 
     private void initSpeech() {
@@ -205,7 +203,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(this, R.string.toast_too_fast, Toast.LENGTH_SHORT).show();
                 pause();
             } else {
-                speech(mWordList.get(position));
+                speech(mWordList.get(mWordKey));
             }
         }
     }
@@ -217,8 +215,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void speech(Word word) {
-        DetailFgt item = (DetailFgt) mWordPagerAdapter.getFragment(mWordKey);
-        item.setSpeakImg(R.mipmap.icon_speaker_on);
         String content = word.getKey();
         String path = getExternalCacheDir() + File.separator + "word_" + content + ".pcm";
         final File file = new File(path);
@@ -234,8 +230,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 e.printStackTrace();
             }
         } else {
+            final DetailFgt item = (DetailFgt) mWordPagerAdapter.getFragment(mWordKey);
             mSynthesizer.setParameter(SpeechConstant.TTS_AUDIO_PATH, path);
             SynthesizerListener synListener = new SynthesizerListener() {
+
                 public void onCompleted(SpeechError error) {
                     if (error == null) {
                         try {
@@ -245,12 +243,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        DetailFgt item = (DetailFgt) mWordPagerAdapter.getFragment(mWordKey);
-                        item.setSpeakImg(R.mipmap.icon_speaker_off);
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.toast_connect, Toast.LENGTH_SHORT).show();
                     }
+                    item.setSpeakImg(R.mipmap.icon_speaker_off);
                 }
 
                 public void onBufferProgress(int percent, int beginPos, int endPos, String info) {
+                    item.setSpeakImg(R.mipmap.icon_speaker_on);
                 }
 
                 public void onSpeakBegin() {
@@ -314,7 +314,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         tvPlay.setCompoundDrawables(null, drawable, null, null);
         tvPlay.setText(R.string.tv_pause);
         mIsPlaying = true;
-        speech(mWordList.get(mWordKey));
+        if (mIsAutoSpeak) {
+            speech(mWordList.get(mWordKey));
+        }
         mWordKey -= 1;
         TimerTask timerTask = new TimerTask() {
             @Override

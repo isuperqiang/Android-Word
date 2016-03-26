@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=");
+        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=*****");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean exist = sharedPreferences.getBoolean(Const.SP_KEY, false);
         if (!exist) {
